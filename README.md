@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# ofb_scoring_ui
-=======
-<<<<<<< HEAD
 # ofb_scoring_ui
 =======
 # Getting Started with Create React App
