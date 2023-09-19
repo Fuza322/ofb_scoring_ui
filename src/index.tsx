@@ -15,8 +15,9 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     text-decoration: none;
     list-style-type: none;
+    font-size: 18px;
     font-family: 'ALSSectorRegular', sans-serif;
-    background-color: #FFFFFF;
+    background-color: inherit;
     //primary text color
     color: #000000;
     ::selection {
@@ -28,7 +29,7 @@ const GlobalStyles = createGlobalStyle`
 
 const theme = {
   text: {
-    fontSize: '16px',
+    fontSize: '18px',
     secondaryColor: '#54608D',
     tertiaryColor: '#C39114',
   },
@@ -48,8 +49,9 @@ const theme = {
     },
   },
   backgroundColors: {
-    primary: '#F4F5F7',
-    secondary: '#C39114',
+    primary: '#FFFFFF',
+    secondary: '#F4F5F7',
+    tertiary: '#C39114',
   },
   shared: {
     dividerColor: '#A3A8C1',

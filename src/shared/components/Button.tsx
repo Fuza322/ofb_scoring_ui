@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-type ButtonTypes = 'primary' | 'secondary'
+type ButtonTypes = 'button' | 'reset' | 'submit'
+type ButtonImportanceTypes = 'primary' | 'secondary'
 
 type _LabelPropsType = {
-    type: ButtonTypes
+    $importance: ButtonImportanceTypes
     disabled?: boolean
 }
 
@@ -14,19 +15,20 @@ const _Label = styled.span<_LabelPropsType>`
   background-color: transparent;
   color: ${props => props.disabled
     ? props.theme.buttons.disabled.color 
-    : props.theme.buttons[props.type].color};
+    : props.theme.buttons[props.$importance].color};
   text-align: end;
 `;
 
 type _ButtonPropsType = {
     type: ButtonTypes
+    $importance: ButtonImportanceTypes
     disabled?: boolean
     $fontSize?: string
     width?: string
     $margin?: string
 }
 
-const _Button = styled.div<_ButtonPropsType>`
+const _Button = styled.button<_ButtonPropsType>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -36,12 +38,12 @@ const _Button = styled.div<_ButtonPropsType>`
   min-width: 100px;
   line-height: 30px;
   min-height: 35px;
-  font-size: ${props => props.$fontSize ? props.$fontSize : props.theme.text.fontSize};
+  font-size: ${props => props.$fontSize};
   margin: ${props => props.$margin || '5px'};
   padding: 5px;
   background-color: ${props => props.disabled
     ? props.theme.buttons.disabled.backgroundColor
-    : props.theme.buttons[props.type].backgroundColor};
+    : props.theme.buttons[props.$importance].backgroundColor};
   border: ${props => props.disabled ? `3px solid ${props.theme.buttons.disabled.borderColor}` : 'none'};
   border-radius: ${props => props.theme.shared.borderRadius};
   overflow: hidden;
@@ -58,38 +60,39 @@ const _Button = styled.div<_ButtonPropsType>`
 type ButtonPropsType = {
     label: string
     type?: ButtonTypes
+    importance?: ButtonImportanceTypes
     action: Function
     disabled?: boolean
     fontSize?: string
     width?: string
     margin?: string
 }
+
 export const Button = React.memo((props: ButtonPropsType) => {
   const {
     label,
-    type = 'primary',
+    type = 'button',
+    importance = 'primary',
     action,
     disabled,
     fontSize,
     width,
     margin,
   } = props;
-  const [internalProcessing, setInternalProcessing] = React.useState<boolean>();
-  const onClick = (e:  React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+
+  const onClick = (e:  React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     e.stopPropagation();
-    const prom = action();
-    if (prom && prom.then) {
-      setInternalProcessing(true);
-      prom.finally(() => setInternalProcessing(false));
-    }
+    action();
   };
+
   return <_Button type={type}
-                  onClick={!(disabled || internalProcessing) && typeof action === 'function' ? onClick : undefined}
-                  disabled={disabled || internalProcessing}
+                  $importance={importance}
+                  onClick={!disabled && typeof action === 'function' ? onClick : undefined}
+                  disabled={disabled}
                   $fontSize={fontSize}
                   width={width}
                   $margin={margin}>
-    <_Label type={type} disabled={disabled}>{label}</_Label>
+    <_Label $importance={importance} disabled={disabled}>{label}</_Label>
   </_Button>;
 });

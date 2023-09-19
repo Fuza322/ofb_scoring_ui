@@ -42,6 +42,7 @@ type ImagePropsType = {
     action? : Function
     disabled?: boolean
 }
+
 export const Image = React.memo((props: ImagePropsType) => {
   const {
     src,
@@ -54,6 +55,7 @@ export const Image = React.memo((props: ImagePropsType) => {
     action,
     ...others
   } = props;
+
   return <_Image src={src}
                  $maxWidth={maxWidth}
                  $maxHeight={maxHeight}

@@ -66,6 +66,7 @@ type ColumnPropsType = {
     disabled?: boolean
     children?: React.ReactNode
 }
+
 export const Column = (props: ColumnPropsType) => {
   const {
     justifyContent,
@@ -82,6 +83,7 @@ export const Column = (props: ColumnPropsType) => {
     action,
     ...others
   } = props;
+
   return <_Column $justifyContent={justifyContent}
                   $alignItems={alignItems}
                   $maxWidth={maxWidth}

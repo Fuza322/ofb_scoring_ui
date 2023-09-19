@@ -1,5 +1,5 @@
 import React, {ChangeEventHandler} from 'react';
-import styled, {keyframes} from 'styled-components';
+import styled from 'styled-components';
 
 const _Wrapper = styled.div`
   display: flex;
@@ -20,23 +20,18 @@ const _Label = styled.label`
   margin: 5px 5px 5px 30px;
 `;
 
-const _LabelText = styled.div<{$fontSize?: string}>`
+type _LabelTextPropsType = {
+    $fontSize?: string
+    $ellipsisOverflow?: boolean
+}
+
+const _LabelText = styled.div<_LabelTextPropsType>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   height: 20px;
-  font-size: ${props => props.$fontSize ? props.$fontSize : props.theme.text.fontSize};
-`;
-
-const scale = keyframes`
- from {
-    opacity: 0;
-    transform: scale(0) rotate(42deg);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) rotate(42deg);
-  }
+  font-size: ${props => props.$fontSize};
+  text-overflow: ${props => props.$ellipsisOverflow && 'ellipsis'};
 `;
 
 type _IndicatorPropsType = {
@@ -53,9 +48,12 @@ const _Indicator = styled.div<_IndicatorPropsType>`
   left: -1.6em;
   border: ${props => props.checked ? 'none' : '2px solid #a9afc5'};
   border-radius: 2px;
-  background: ${props => props.checked && props.theme.backgroundColors.secondary};
+  background: ${props => props.checked && props.theme.backgroundColors.tertiary};
   opacity: ${props => props.disabled ? 0.5 : 1};
   cursor: ${props => !props.disabled ? 'pointer' : 'not-allowed'};
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 
   ${_Input}:not(:disabled):checked & {
     background: #d1d1d1;
@@ -67,12 +65,10 @@ const _Indicator = styled.div<_IndicatorPropsType>`
     left: 0.35em;
     width: 30%;
     height: 60%;
-    background: ${props => props.theme.backgroundColors.secondary};
+    background: ${props => props.theme.backgroundColors.tertiary};
     border: solid #FFFFFF;
     border-width: 0 0.2em 0.2em 0;
-    animation-name: ${scale};
-    animation-duration: 0.3s;
-    animation-fill-mode: forwards;
+    transform: rotate(42deg);
   }
 
   &::after {
@@ -92,17 +88,24 @@ type CheckboxPropsType = {
     disabled?: boolean
     label: string
     labelFontSize?: string
+    ellipsisOverflow?: boolean
 }
 
 export const Checkbox = React.memo((props: CheckboxPropsType) => {
-  const {value, onChange, disabled, label, labelFontSize} = props;
-  return (
-    <_Wrapper>
-      <_Label>
-        <_LabelText $fontSize={labelFontSize}>{label}</_LabelText>
-        <_Input type='checkbox' onChange={onChange} checked={value} disabled={disabled}/>
-        <_Indicator checked={value} disabled={disabled}/>
-      </_Label>
-    </_Wrapper>
-  );
+  const {
+    value,
+    onChange,
+    disabled,
+    label,
+    labelFontSize,
+    ellipsisOverflow,
+  } = props;
+
+  return <_Wrapper>
+    <_Label>
+      <_LabelText $fontSize={labelFontSize} $ellipsisOverflow={ellipsisOverflow}>{label}</_LabelText>
+      <_Input type='checkbox' onChange={onChange} checked={value} disabled={disabled}/>
+      <_Indicator checked={value} disabled={disabled}/>
+    </_Label>
+  </_Wrapper>;
 });

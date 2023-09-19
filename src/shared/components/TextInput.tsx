@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import styled from 'styled-components';
 
 type _InputPropsType = {
@@ -11,11 +11,11 @@ type _InputPropsType = {
 const _Input = styled.input<_InputPropsType>`
   width: ${props => props.width || 'inherit'};
   max-width: ${props => props.$maxWidth};
-  min-height: 35px;
-  font-size: ${props => props.theme.text.fontSize};
+  height: 35px;
+  font-weight: inherit;
   padding: 0;
-  margin: ${props => props.$margin || '5px'};
-  background: none;
+  margin: ${props => props.$margin || '0'};
+  background-color: transparent;
   opacity: ${props => props.disabled ? 0.5 : 1};
   outline: 0;
   outline-offset: 0;
@@ -26,26 +26,39 @@ const _Input = styled.input<_InputPropsType>`
   
 `;
 
-type InputPropsType = {
+type TextInputPropsType = {
     value: string
     onChange: Function
+    maxLength?: number
     placeholder?: string
     disabled?: boolean
+    upperCaseOnly?: boolean
     width?: string
     maxWidth?: string
     margin?: string
 }
-export const Input = React.memo((props: InputPropsType) => {
-  const {value, onChange, placeholder, disabled, width, maxWidth, margin} = props;
-  const [val, setVal] = useState(value);
 
+export const TextInput = React.memo((props: TextInputPropsType) => {
+  const {
+    value,
+    onChange,
+    maxLength= 255,
+    placeholder,
+    disabled,
+    upperCaseOnly,
+    width,
+    maxWidth,
+    margin,
+  } = props;
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.currentTarget.value;
-    setVal(newValue);
-    onChange(newValue);
+    const targetValue = e.currentTarget.value;
+    if (targetValue.length <= maxLength) {
+      onChange(upperCaseOnly ? e.currentTarget.value.toUpperCase() : e.currentTarget.value);
+    }
   };
+
   return <_Input type='text'
-                 value={val}
+                 value={value}
                  onChange={onChangeHandler}
                  placeholder={placeholder}
                  disabled={disabled}
