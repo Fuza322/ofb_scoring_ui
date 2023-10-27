@@ -120,7 +120,7 @@ export const NumberInput = React.memo((props: NumberInputPropsType) => {
   return <_Wrapper width={width} $maxWidth={maxWidth} $margin={margin}>
     <_Input type='text'
             value={type === 'currency'
-              ? val.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, '$1' + ' ')
+              ? val?.replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, '$1' + ' ')
               : val}
             onChange={onChangeHandler}
             placeholder={placeholder}

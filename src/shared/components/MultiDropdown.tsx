@@ -143,13 +143,14 @@ const _OptionRow = styled.div<_OptionRowPropsType>`
 `;
 
 type OptionValueType = {
-    name: string,
+    name: any,
     value: any
 }
 
 type MultiDropdownPropsType = {
     value: Array<OptionValueType> | []
     onChange: Function
+    clearAction?: Function
     options: Array<OptionValueType> | []
     placeholder?: string
     disabled?: boolean
@@ -164,6 +165,7 @@ export const MultiDropdown = React.memo((props: MultiDropdownPropsType) => {
   const {
     value= [],
     onChange,
+    clearAction,
     options,
     placeholder,
     disabled,
@@ -192,6 +194,7 @@ export const MultiDropdown = React.memo((props: MultiDropdownPropsType) => {
 
   const clearSelection = (e:  React.MouseEvent<HTMLImageElement, MouseEvent>) => {
     e.stopPropagation();
+    clearAction && clearAction();
     onChange([]);
     setShowOptions(false);
   };
@@ -224,7 +227,7 @@ export const MultiDropdown = React.memo((props: MultiDropdownPropsType) => {
         ? <_ItemsWrapper>{selectedItems}</_ItemsWrapper>
         : (placeholder ? <_PlaceholderText>{placeholder}</_PlaceholderText> : <div></div>)}
       <_IconWrapper>
-        {!!value?.length && <_ClearIcon onClick={clearSelection} src={closeIcon}/>}
+        {!!clearAction && !!value?.length && <_ClearIcon onClick={clearSelection} src={closeIcon}/>}
         <_DropdownIcon $showOptions={showOptions} src={dropdownIcon}/>
       </_IconWrapper>
     </_Dropdown>

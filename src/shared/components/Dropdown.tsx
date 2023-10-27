@@ -125,7 +125,7 @@ const _OptionText = styled.span`
 `;
 
 type OptionValueType = {
-    name: string,
+    name: any,
     value: any
 }
 
@@ -195,7 +195,7 @@ export const Dropdown = React.memo((props: DropdownPropsType) => {
                  $margin={margin}>
         {value?.name ? value.name : (placeholder ? <_PlaceholderText>{placeholder}</_PlaceholderText> : <div></div>)}
         <_IconWrapper>
-          {!!value && <_ClearIcon onClick={clearSelection} src={closeIcon}/>}
+          {!!clearAction && !!value && <_ClearIcon onClick={clearSelection} src={closeIcon}/>}
           <_DropdownIcon $showOptions={showOptions} src={dropdownIcon}/>
         </_IconWrapper>
       </_Dropdown>
