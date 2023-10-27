@@ -33,6 +33,7 @@ export const Scoring = React.memo(function() {
 
   const language = useSelector<AppRootStateType, LanguageType>(state => state.app.language);
 
+  //TODO Get incomeOptions object from API call when axios will be setting up*/}
   const incomeOptions = useMemo(() => [
     {
       id: 1,
